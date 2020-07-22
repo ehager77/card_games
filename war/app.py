@@ -48,3 +48,80 @@ class Player():
         self.name = name
         self.cards = []
         self.won_cards = []
+
+def check_for_win(player_1, player_2):    
+    if len(player_1.cards) == 0  or len(player_2.cards) == 0:
+        return True
+
+def war(player_1, player_2): 
+    global war_chest
+    
+    for i in range(0,4):
+        try:
+            war_chest.append(player_1.cards.pop(i))
+            war_chest.append(player_2.cards.pop(i))
+        except IndexError:
+            continue
+        
+    for card in war_chest:
+        print(card)
+    print("There are " + str(len(war_chest)) + " cards in the war chest.")
+    print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+    print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+    
+    winner = play_game(player_1, player_2)
+    
+    if winner == player_1.name:
+        while len(war_chest) != 0:
+            player_1.cards.insert(-1, war_chest.pop(0))
+        
+    elif winner == player_2.name:
+        while len(war_chest) != 0:
+            player_2.cards.insert(-1, war_chest.pop(0))
+            
+    else:
+        war(player_1, player_2)
+                
+def play_game(player_1, player_2):
+    check_for_win(player_1, player_2)
+    player_one_card = player_1.cards[0]
+    player_two_card = player_2.cards[0]
+    player_1_name = player_1.name.capitalize()
+    player_2_name = player_2.name.capitalize()
+    print(f"{player_1_name}'s Card: " + player_one_card.rank.capitalize() + " of " + player_one_card.suit.capitalize())
+    print(f"{player_2_name}'s Card: " + player_two_card.rank.capitalize() + " of " + player_two_card.suit.capitalize())
+    
+    if player_one_card.value > player_two_card.value:
+        print(player_1.name.capitalize() + " Wins!")
+        player_1.cards.insert(-1, player_2.cards.pop(player_2.cards.index(player_two_card)))
+        player_1.cards.insert(-1, player_1.cards.pop(player_1.cards.index(player_one_card)))
+        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+        return player_1.name
+        
+    elif player_two_card.value > player_one_card.value:
+        print(player_2.name.capitalize() + " Wins!")
+        player_2.cards.insert(-1, player_1.cards.pop(player_1.cards.index(player_one_card)))
+        player_2.cards.insert(-1, player_2.cards.pop(player_2.cards.index(player_two_card)))
+        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+        return player_2.name
+        
+    elif player_two_card.value == player_one_card.value:
+        war(player_1, player_2)
+        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+
+player_1_name = 'Eric'
+player_1 = Player(player_1_name)
+
+player_2_name = 'Justin'
+player_2 = Player(player_2_name)
+
+new_deck = Deck()
+new_deck.shuffle_deck()
+new_deck.deal(player_1, player_2)
+
+while not check_for_win(player_1, player_2):
+    play_game(player_1, player_2)
+
