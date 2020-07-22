@@ -50,8 +50,16 @@ class Player():
         self.won_cards = []
 
 def check_for_win(player_1, player_2):    
-    if len(player_1.cards) == 0  or len(player_2.cards) == 0:
-        return True
+    if len(player_1.cards) == 0:
+        print(player_2.name + " wins the War!")
+        print(player_1.name + " has been Decimated!!")
+        return player_1.name  
+    elif len(player_2.cards) == 0:
+        print(player_1.name + " wins the War!")
+        print(player_2.name + " has been Decimated!!")
+        return player_2.name
+    else:
+        return False
 
 def war(player_1, player_2): 
     global war_chest
@@ -108,20 +116,33 @@ def play_game(player_1, player_2):
         return player_2.name
         
     elif player_two_card.value == player_one_card.value:
+        print("WAR!!!")
         war(player_1, player_2)
         print("Player 1 now has " + str(len(player_1.cards)) + " cards")
         print("Player 2 now has " + str(len(player_2.cards)) + " cards")
 
-player_1_name = 'Eric'
-player_1 = Player(player_1_name)
-
-player_2_name = 'Justin'
-player_2 = Player(player_2_name)
-
 new_deck = Deck()
 new_deck.shuffle_deck()
+
+player_1_name = input("Hi Player 1! What's your name? ") 
+player_1 = Player(player_1_name)
+
+player_2_name = input("Hi Player 2! What's your name? ")
+player_2 = Player(player_2_name)
+
 new_deck.deal(player_1, player_2)
+
+print("LET'S PLAY!!")
 
 while not check_for_win(player_1, player_2):
     play_game(player_1, player_2)
+    # go_again = input("Attack? Y or N: ")
+
+    # if go_again == "y".lower():
+    #     play_game(player_1, player_2)
+
+    # elif go_again == "n".lower():
+    #     print("Thanks for playing!  See ya next time!")
+    #     break
+
 
