@@ -47,7 +47,6 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.cards = []
-        self.won_cards = []
 
 def check_for_win(player_1, player_2):    
     if len(player_1.cards) == 0:
@@ -92,8 +91,10 @@ def war(player_1, player_2):
                 
 def play_game(player_1, player_2):
     check_for_win(player_1, player_2)
+
     player_one_card = player_1.cards[0]
     player_two_card = player_2.cards[0]
+
     player_1_name = player_1.name.capitalize()
     player_2_name = player_2.name.capitalize()
     print(f"{player_1_name}'s Card: " + player_one_card.rank.capitalize() + " of " + player_one_card.suit.capitalize())
@@ -121,28 +122,24 @@ def play_game(player_1, player_2):
         print("Player 1 now has " + str(len(player_1.cards)) + " cards")
         print("Player 2 now has " + str(len(player_2.cards)) + " cards")
 
-new_deck = Deck()
-new_deck.shuffle_deck()
 
-player_1_name = input("Hi Player 1! What's your name? ") 
-player_1 = Player(player_1_name)
+def game_on():
+    new_deck = Deck()
+    new_deck.shuffle_deck()
 
-player_2_name = input("Hi Player 2! What's your name? ")
-player_2 = Player(player_2_name)
+    player_1_name = input("Hi Player 1! What's your name? ") 
+    player_1 = Player(player_1_name)
 
-new_deck.deal(player_1, player_2)
+    player_2_name = input("Hi Player 2! What's your name? ")
+    player_2 = Player(player_2_name)
 
-print("LET'S PLAY!!")
+    new_deck.deal(player_1, player_2)
 
-while not check_for_win(player_1, player_2):
-    play_game(player_1, player_2)
-    # go_again = input("Attack? Y or N: ")
+    print("LET'S PLAY!!")
 
-    # if go_again == "y".lower():
-    #     play_game(player_1, player_2)
+    while not check_for_win(player_1, player_2):
+        play_game(player_1, player_2)
 
-    # elif go_again == "n".lower():
-    #     print("Thanks for playing!  See ya next time!")
-    #     break
+game_on()
 
 
