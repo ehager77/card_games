@@ -68,7 +68,7 @@ def war(player_1, player_2):
             war_chest.append(player_1.cards.pop(i))
             war_chest.append(player_2.cards.pop(i))
         except IndexError:
-            continue
+            pass
         
     for card in war_chest:
         print(card)
@@ -90,37 +90,48 @@ def war(player_1, player_2):
         war(player_1, player_2)
                 
 def play_game(player_1, player_2):
-    check_for_win(player_1, player_2)
+    if player_1.cards[0] in player_1.cards or player_2.cards[0] in player_2.cards:
+        player_one_card = player_1.cards[0]
+        player_two_card = player_2.cards[0]
 
-    player_one_card = player_1.cards[0]
-    player_two_card = player_2.cards[0]
+        player_1_name = player_1.name.capitalize()
+        player_2_name = player_2.name.capitalize()
+        print(f"{player_1_name}'s Card: " + player_one_card.rank.capitalize() + " of " + player_one_card.suit.capitalize())
+        print(f"{player_2_name}'s Card: " + player_two_card.rank.capitalize() + " of " + player_two_card.suit.capitalize())
+        
+        if player_one_card.value > player_two_card.value:
+            print(player_1.name.capitalize() + " Wins!")
+            player_1.cards.insert(-1, player_2.cards.pop(player_2.cards.index(player_two_card)))
+            player_1.cards.insert(-1, player_1.cards.pop(player_1.cards.index(player_one_card)))
+            print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+            print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+            return player_1.name
+            
+        elif player_two_card.value > player_one_card.value:
+            print(player_2.name.capitalize() + " Wins!")
+            player_2.cards.insert(-1, player_1.cards.pop(player_1.cards.index(player_one_card)))
+            player_2.cards.insert(-1, player_2.cards.pop(player_2.cards.index(player_two_card)))
+            print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+            print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+            return player_2.name
+            
+        elif player_two_card.value == player_one_card.value:
+            print("WAR!!!")
+            war(player_1, player_2)
+            print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+            print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+    else:
+        return
 
-    player_1_name = player_1.name.capitalize()
-    player_2_name = player_2.name.capitalize()
-    print(f"{player_1_name}'s Card: " + player_one_card.rank.capitalize() + " of " + player_one_card.suit.capitalize())
-    print(f"{player_2_name}'s Card: " + player_two_card.rank.capitalize() + " of " + player_two_card.suit.capitalize())
-    
-    if player_one_card.value > player_two_card.value:
-        print(player_1.name.capitalize() + " Wins!")
-        player_1.cards.insert(-1, player_2.cards.pop(player_2.cards.index(player_two_card)))
-        player_1.cards.insert(-1, player_1.cards.pop(player_1.cards.index(player_one_card)))
-        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
-        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
-        return player_1.name
-        
-    elif player_two_card.value > player_one_card.value:
-        print(player_2.name.capitalize() + " Wins!")
-        player_2.cards.insert(-1, player_1.cards.pop(player_1.cards.index(player_one_card)))
-        player_2.cards.insert(-1, player_2.cards.pop(player_2.cards.index(player_two_card)))
-        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
-        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
-        return player_2.name
-        
-    elif player_two_card.value == player_one_card.value:
-        print("WAR!!!")
-        war(player_1, player_2)
-        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
-        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+def try_again():
+    play_again = ''
+    while play_again != "y" or "n":
+        play_again = input("Would you like to play again? Please enter Y or N: ").lower()
+        if play_again == "y":
+            game_on()
+        elif play_again == "n":
+            print("Thanks for playing WAR.  See you next time!")
+            return
 
 
 def game_on():
@@ -140,6 +151,9 @@ def game_on():
     while not check_for_win(player_1, player_2):
         play_game(player_1, player_2)
 
+    try_again()
+
 game_on()
+
 
 
