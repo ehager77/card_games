@@ -84,12 +84,12 @@ def war(player_1, player_2):
         
     elif winner == player_2.name:
         while len(war_chest) != 0:
-            player_2.cards.insert(-1, war_chest.pop(0))
-            
+            player_2.cards.insert(-1, war_chest.pop(0))      
     else:
         war(player_1, player_2)
                 
 def play_game(player_1, player_2):
+
     if player_1.cards[0] in player_1.cards or player_2.cards[0] in player_2.cards:
         player_one_card = player_1.cards[0]
         player_two_card = player_2.cards[0]
@@ -117,7 +117,21 @@ def play_game(player_1, player_2):
             
         elif player_two_card.value == player_one_card.value:
             print("WAR!!!")
-            war(player_1, player_2)
+            if len(player_1.cards) <= 3:
+                print(player_1.name + " is unable to mobilize enough troops. They forfeit!")
+                while len(player_1.cards) != 0:
+                    for card in player_1.cards:
+                        player_2.cards.insert(-1, player_1.cards.pop(player_1.cards.index(card)))
+
+            elif len(player_2.cards) <= 3:
+                print(player_2.name + " is unable to mobilize enough troops. They forfeit!")
+                while len(player_2.cards) != 0:
+                    for card in player_2.cards:
+                        player_1.cards.insert(-1, player_2.cards.pop(player_2.cards.index(card)))
+
+            else:
+                war(player_1, player_2)
+            check_for_win(player_1, player_2)
             print("Player 1 now has " + str(len(player_1.cards)) + " cards")
             print("Player 2 now has " + str(len(player_2.cards)) + " cards")
     else:
