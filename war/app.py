@@ -65,8 +65,8 @@ def war(player_1, player_2):
     
     for i in range(0,4):
         try:
-            war_chest.append(player_1.cards.pop(i))
-            war_chest.append(player_2.cards.pop(i))
+            war_chest.append(player_1.cards.pop(i - 1))
+            war_chest.append(player_2.cards.pop(i - 1))
         except IndexError:
             pass
         
@@ -75,6 +75,8 @@ def war(player_1, player_2):
     print("There are " + str(len(war_chest)) + " cards in the war chest.")
     print("Player 1 now has " + str(len(player_1.cards)) + " cards")
     print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+    
+    check_for_win(player_1, player_2)
     
     winner = play_game(player_1, player_2)
     
@@ -89,7 +91,7 @@ def war(player_1, player_2):
         war(player_1, player_2)
                 
 def play_game(player_1, player_2):
-
+    check_for_win(player_1, player_2)
     if player_1.cards[0] in player_1.cards or player_2.cards[0] in player_2.cards:
         player_one_card = player_1.cards[0]
         player_two_card = player_2.cards[0]
@@ -131,9 +133,10 @@ def play_game(player_1, player_2):
 
             else:
                 war(player_1, player_2)
-            check_for_win(player_1, player_2)
-            print("Player 1 now has " + str(len(player_1.cards)) + " cards")
-            print("Player 2 now has " + str(len(player_2.cards)) + " cards")
+                
+        check_for_win(player_1, player_2)
+        print("Player 1 now has " + str(len(player_1.cards)) + " cards")
+        print("Player 2 now has " + str(len(player_2.cards)) + " cards")
     else:
         return
 
@@ -168,6 +171,3 @@ def game_on():
     try_again()
 
 game_on()
-
-
-
